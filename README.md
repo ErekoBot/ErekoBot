@@ -1,0 +1,2 @@
+# ErekoBot
+Robô modular serpentoidal.
