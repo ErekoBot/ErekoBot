@@ -9,10 +9,10 @@ float angles[3]; // yaw pitch roll
 // Set the FreeSixIMU object
 FreeSixIMU sixDOF = FreeSixIMU();
 
-void setup() { 
+void setup() {   
   Serial.begin(9600);
   Wire.begin();
-  
+  pinMode(13, OUTPUT);
   delay(5);
   sixDOF.init(); //begin the IMU
   delay(5);
@@ -29,9 +29,10 @@ void loop() {
   Serial.println(angles[2]);
   
   if(angles[1] > -10 && angles[1] < 10){
-    
-    delay(5000);
-  
+    digitalWrite(13, HIGH);
+  }
+  else{
+    digitalWrite(13, LOW);
   }
   
   delay(100); 
