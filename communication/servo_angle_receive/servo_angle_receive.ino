@@ -20,7 +20,8 @@ void loop(){
   }
 
     pos = pos1 + pos2;
+    Serial.println(pos);
     myservo.write(pos);
-    delay(15);
+    delay(17);
   
 }

@@ -24,11 +24,11 @@ void loop(){
     psi += pi/180;
     if(Serial.available()>0){  //há algo para ler?
       estado = Serial.read(); //Se tem, leia-a  
-      }
     }
-    delay(7); 
-  
-  delay(5);
+  delay(7); 
+  delay(10);  
+  }
+   
 }
 
 
