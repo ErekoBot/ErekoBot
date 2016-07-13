@@ -9,6 +9,7 @@ Queue RxQ;
 
 
 int pos;
+bool flag;
 
 void setup(void)
 {
@@ -44,19 +45,27 @@ void loop(void)
                 unsigned char outMsg[Q_SIZE];
                 unsigned char outFrame[Q_SIZE];
                 int frameLen = 0;
-                int addr = ((int)msgBuff[4] << 8) + (int)msgBuff[5];
-
+                int addr = ((int)msgBuff[5] << 8) + (int)msgBuff[6];
+                             
                 // 10 is length of "you sent: "
                 memcpy(outMsg, "you sent: ", 10);
                 // len - (9 bytes of frame not in message content)
                 memcpy(&outMsg[10], &msgBuff[8], msgLen-9);
 
                 // 10 + (-9) = 1 more byte in new content than in previous message
-                frameLen = xbee.Send(outMsg, msgLen+1, outFrame, addr);
+                //frameLen = xbee.Send(outMsg, msgLen+1, outFrame, addr);
                 //Serial.write(outFrame, frameLen);
                 i += msgLen;
                 delPos = i;
-                pos = msgBuff[8];
+                
+                if(addr == 0x0001){
+                    pos = msgBuff[8];
+                    flag = true;  
+                }
+                else{
+                    flag = false;
+                }
+                  
             }else{
                 if (i>0){
                     delPos = i-1;
@@ -66,7 +75,8 @@ void loop(void)
     }
 
     RxQ.Clear(delPos);
-    
-    myservo.write(pos);
+    if(flag){
+        myservo.write(pos);
+    }
     delay(17);
 }

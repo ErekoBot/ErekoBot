@@ -12,6 +12,6 @@ if __name__ == "__main__":
     while True:
         for angle in angles:
             content = format(angle, '02x')
-            xbee.Send(bytearray.fromhex(content))   
+            xbee.Send(bytearray.fromhex(content),0x0002)   
             sleep(0.02)
 
