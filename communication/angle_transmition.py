@@ -2,7 +2,7 @@ import serial
 import time
 import math
 
-s = serial.Serial('/dev/ttyACM0', baudrate = 9600)
+s = serial.Serial('/dev/ttyUSB0', baudrate = 9600)
 
 d0 = 42
 d = 81
@@ -27,14 +27,15 @@ while flag:
 
 while True:
     for angle in angles:
+        print angle
         int_data = int(angle)
         angle2 = 0
         int_data2 = 0
         if int_data > 127:
             int_data2 = int_data - 127
             int_data = 127
-        angle = str(unichr(int_data))
-        angle2 = str(unichr(int_data2))
+        angle = unichr(int_data)
+        angle2 = unichr(int_data2)
         s.write(angle)
         s.write(angle2)
         time.sleep(0.017)

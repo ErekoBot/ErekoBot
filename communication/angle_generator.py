@@ -14,6 +14,6 @@ while flag:
     angle = (2*a* math.sin(pi*k/M) * math.sin(psi+((2*pi*k/M)*(i-1+d0/d)))*180/pi) + 90
     print(angle)
     if psi > 2*pi:
-        flag = false
+        flag = False
     psi += pi/180
 
