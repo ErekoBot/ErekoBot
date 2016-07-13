@@ -1,13 +1,12 @@
 #include "XBee.h"
 #include "queue.h"
 #include <Servo.h>
-#include <SoftwareSerial.h>
 
 
 Servo myservo;
 XBee xbee;
 Queue RxQ;
-SoftwareSerial sserial(12,13);
+
 
 int pos;
 
@@ -15,7 +14,7 @@ void setup(void)
 {
     myservo.attach(9);
     myservo.write(180);
-    sserial.begin(9600);
+    Serial.begin(9600);
 }
 
 void loop(void)
@@ -24,8 +23,8 @@ void loop(void)
     int queueLen = 0;
     int delPos = 0;
    
-    while (sserial.available() > 0){
-        unsigned char in = (unsigned char)sserial.read();
+    while (Serial.available() > 0){
+        unsigned char in = (unsigned char)Serial.read();
         if (!RxQ.Enqueue(in)){
             break;
         }
@@ -54,10 +53,10 @@ void loop(void)
 
                 // 10 + (-9) = 1 more byte in new content than in previous message
                 frameLen = xbee.Send(outMsg, msgLen+1, outFrame, addr);
-                //sserial.write(outFrame, frameLen);
+                //Serial.write(outFrame, frameLen);
                 i += msgLen;
                 delPos = i;
-                pos = outMsg[0];    
+                pos = msgBuff[8];
             }else{
                 if (i>0){
                     delPos = i-1;
@@ -67,6 +66,7 @@ void loop(void)
     }
 
     RxQ.Clear(delPos);
+    
     myservo.write(pos);
     delay(17);
 }
