@@ -7,7 +7,7 @@ char estado;
 void setup(){
   myservo.attach(9);
   myservo.write(180);
-  Serial.begin(4800);
+  Serial.begin(9600);
   pos1 = 0;
   pos2 = 0;
 }

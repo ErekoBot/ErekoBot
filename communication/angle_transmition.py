@@ -2,7 +2,7 @@ import serial
 import time
 import math
 
-s = serial.Serial('/dev/ttyUSB0', baudrate = 9600)
+s = serial.Serial('/dev/ttyUSB1', baudrate = 9600)
 
 d0 = 42
 d = 81

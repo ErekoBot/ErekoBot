@@ -1,12 +1,12 @@
 #include "XBee.h"
 #include "queue.h"
 #include <Servo.h>
+#include <SoftwareSerial.h>
 
 
 Servo myservo;
 XBee xbee;
 Queue RxQ;
-
 
 int pos;
 bool flag;
@@ -14,7 +14,6 @@ bool flag;
 void setup(void)
 {
     myservo.attach(9);
-    myservo.write(180);
     Serial.begin(9600);
 }
 
@@ -38,7 +37,7 @@ void loop(void)
             unsigned char msgBuff[Q_SIZE];
             int checkLen = 0;
             int msgLen = 0;
-
+            
             checkLen = RxQ.Copy(checkBuff, i);
             msgLen = xbee.Receive(checkBuff, checkLen, msgBuff);
             if (msgLen > 0){
@@ -58,13 +57,8 @@ void loop(void)
                 i += msgLen;
                 delPos = i;
                 
-                if(addr == 0x0001){
-                    pos = msgBuff[8];
-                    flag = true;  
-                }
-                else{
-                    flag = false;
-                }
+                pos = msgBuff[8];
+                flag = true;
                   
             }else{
                 if (i>0){
@@ -73,10 +67,10 @@ void loop(void)
             }
         }
     }
-
     RxQ.Clear(delPos);
     if(flag){
         myservo.write(pos);
+        //Serial.println(pos);
     }
-    delay(17);
+    delay(10);
 }

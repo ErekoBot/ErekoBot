@@ -8,7 +8,6 @@ class AngleCalculator():
     a = 20 * pi/180
     k = 2
     M = 5
-    i = 1
     psi = 0
     flag = True
     x = 1
@@ -17,9 +16,9 @@ class AngleCalculator():
     def __init__(self, arg=0):
         self.arg = arg
 
-    def calculate(self):
+    def calculate(self, i):
         while self.flag:
-            angle = (2*self.a* math.sin(self.pi*self.k/self.M) * math.sin(self.psi+((2*self.pi*self.k/self.M)*(self.i-1+self.d0/self.d)))*180/self.pi) + 90
+            angle = (2*self.a* math.sin(self.pi*self.k/self.M) * math.sin(self.psi+((2*self.pi*self.k/self.M)*(i-1+self.d0/self.d)))*180/self.pi) + 90
             angle = int(angle)
             self.angles.append(angle)
             print(angle)
