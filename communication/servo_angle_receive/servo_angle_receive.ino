@@ -1,13 +1,15 @@
 #include <Servo.h>
 
 Servo myservo;
-int pos1, pos2;
+int pos1 = 0, pos2 = 0;
 int pos;
-
+char estado;
 void setup(){
   myservo.attach(9);
-  myservo.write(90);
+  myservo.write(180);
   Serial.begin(9600);
+  pos1 = 0;
+  pos2 = 0;
 }
 
 void loop(){
@@ -20,7 +22,8 @@ void loop(){
   }
 
     pos = pos1 + pos2;
+    Serial.println(pos);
     myservo.write(pos);
-    delay(15);
+    delay(17);
   
 }
