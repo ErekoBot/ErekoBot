@@ -1,5 +1,6 @@
 import XBee
 import math
+import cv2
 from time import sleep
 
 def calculate(i):
@@ -26,22 +27,22 @@ def calculate(i):
 
 
 if __name__ == "__main__":
-    xbee = XBee.XBee("/dev/ttyUSB1")  # Your serial port name here
+    xbee = XBee.XBee("/dev/ttyUSB0")  # Your serial port name here
     
     angles_1 = calculate(1)
     angles_2 = calculate(2)
 
-    
     while True:
         i = 0
         for angle in angles_1:
             content_1 = format(angle, '02x')
             content_2 = format(angles_2[i], '02x')
-            print(angle)
+            # print(angle)
             xbee.Send(bytearray.fromhex(content_1), 0x0001)  
-            # xbee.Send(bytearray.fromhex(content_2),0x0002)
+            xbee.Send(bytearray.fromhex(content_2), 0x0002)
             i += 1
             sleep(0.01)
+            
         print("over")
         
         
