@@ -39,9 +39,9 @@ if __name__ == "__main__":
             content_2 = format(angles_2[i], '02x')
             # print(angle)
             xbee.Send(bytearray.fromhex(content_1), 0x0001)  
-            xbee.Send(bytearray.fromhex(content_2), 0x0002)
+            xbee.Send(bytearray.fromhex(content_1), 0x0002)
             i += 1
-            sleep(0.01)
+            sleep(0.005)
             
         print("over")
         
