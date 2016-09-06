@@ -30,6 +30,10 @@ if __name__ == "__main__":
     
     angles_1 = calculate(1)
     angles_2 = calculate(2)
+    angles_3 = calculate(3)
+    angles_4 = calculate(4)
+    angles_5 = calculate(5)
+    angles_6 = calculate(6)
 
     
     while True:
@@ -37,9 +41,17 @@ if __name__ == "__main__":
         for angle in angles_1:
             content_1 = format(angle, '02x')
             content_2 = format(angles_2[i], '02x')
+            content_3 = format(angles_3[i], '02x')
+            content_4 = format(angles_4[i], '02x')
+            content_5 = format(angles_5[i], '02x')
+            content_6 = format(angles_6[i], '02x')
             print(angle)
             xbee.Send(bytearray.fromhex(content_1), 0x0001)  
             # xbee.Send(bytearray.fromhex(content_2),0x0002)
+            # xbee.Send(bytearray.fromhex(content_3),0x0003)
+            # xbee.Send(bytearray.fromhex(content_4),0x0004)
+            # xbee.Send(bytearray.fromhex(content_5),0x0005)
+            # xbee.Send(bytearray.fromhex(content_6),0x0006)
             i += 1
             sleep(0.01)
         print("over")
