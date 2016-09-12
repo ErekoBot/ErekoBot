@@ -10,6 +10,7 @@ Queue RxQ;
 
 int pos;
 bool flag;
+long int count = 0;
 
 void setup(void)
 {
@@ -59,7 +60,8 @@ void loop(void)
                 delPos = i;
                 
                 pos = msgBuff[8];
-                
+                Serial.println(count);
+                count++;
                 flag = true;
                   
             }else{
@@ -70,9 +72,8 @@ void loop(void)
         }
     }
     RxQ.Clear(delPos);
-    if(flag == true){   
+    if(flag){
         myservo.write(pos);
-        Serial.println(pos);
     }
-    delay(10);
+    
 }

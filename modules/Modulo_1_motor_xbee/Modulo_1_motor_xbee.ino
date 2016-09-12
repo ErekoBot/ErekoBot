@@ -8,6 +8,7 @@ float d0 = 42, d = 81 , pi = 3.141592, a = 20 * pi/180, k = 2, anguloMotor, M = 
 void setup(){
   Serial.begin(9600);
   Motor.attach(9);            // conecta o servo no pino 9
+  Motor.write(120);
 }
 
 void loop(){

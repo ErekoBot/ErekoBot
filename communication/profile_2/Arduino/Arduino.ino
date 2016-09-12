@@ -8,7 +8,7 @@ Servo myservo;
 XBee xbee;
 Queue RxQ;
 
-int pos;
+int angles[] = {90, 90, 91, 91, 92, 93, 93, 94, 95, 95, 96, 97, 97, 98, 99, 99, 100, 101, 101, 102, 103, 103, 104, 104, 105, 106, 106, 107, 107, 108, 109, 109, 110, 110, 111, 111, 112, 112, 113, 113, 114, 114, 115, 115, 116, 116, 117, 117, 118, 118, 119, 119, 119, 120, 120, 121, 121, 121, 122, 122, 122, 123, 123, 123, 124, 124, 124, 125, 125, 125, 125, 125, 126, 126, 126, 126, 126, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 128, 128, 128, 128, 128, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 127, 126, 126, 126, 126, 126, 125, 125, 125, 125, 125, 124, 124, 124, 123, 123, 123, 122, 122, 122, 121, 121, 121, 120, 120, 119, 119, 119, 118, 118, 117, 117, 116, 116, 115, 115, 114, 114, 113, 113, 112, 112, 111, 111, 110, 110, 109, 109, 108, 107, 107, 106, 106, 105, 104, 104, 103, 103, 102, 101, 101, 100, 99, 99, 98, 97, 97, 96, 95, 95, 94, 93, 93, 92, 91, 91, 90, 90, 89, 88, 88, 87, 86, 86, 85, 84, 84, 83, 82, 82, 81, 80, 80, 79, 78, 78, 77, 76, 76, 75, 75, 74, 73, 73, 72, 72, 71, 70, 70, 69, 69, 68, 68, 67, 67, 66, 66, 65, 65, 64, 64, 63, 63, 62, 62, 61, 61, 60, 60, 60, 59, 59, 58, 58, 58, 57, 57, 57, 56, 56, 56, 55, 55, 55, 54, 54, 54, 54, 54, 53, 53, 53, 53, 53, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 51, 51, 51, 51, 51, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 52, 53, 53, 53, 53, 53, 54, 54, 54, 54, 54, 55, 55, 55, 56, 56, 56, 57, 57, 57, 58, 58, 58, 59, 59, 60, 60, 60, 61, 61, 62, 62, 63, 63, 64, 64, 65, 65, 66, 66, 67, 67, 68, 68, 69, 69, 70, 70, 71, 72, 72, 73, 73, 74, 75, 75, 76, 76, 77, 78, 78, 79, 80, 80, 81, 82, 82, 83, 84, 84, 85, 86, 86, 87, 88, 88, 89, 89, 90};
 bool flag;
 
 void setup(void)
@@ -19,10 +19,39 @@ void setup(void)
 
 void loop(void)
 {
+    int t_instant;
+    t_instant = receive();
+    
+    int len = sizeof(angles)/sizeof(int);
+    while(flag){
+      for(int j = t_instant; j < len; j++){
+        
+        if(j == len - 1){
+          myservo.write(angles[j]);
+          Serial.println(angles[j]);
+          j = 0;
+          delay(10);
+          }
+        myservo.write(angles[j]);
+        Serial.println(angles[j]);
+        delay(10);
+        if(receive() == 400){
+          flag = false;
+          break;
+          }
+        }
+        
+      }
+
+}
+
+int receive(){
+    
     delay(5);
+    int t_instant;
     int queueLen = 0;
     int delPos = 0;
-   
+    
     while (Serial.available() > 0){
         unsigned char in = (unsigned char)Serial.read();
         if (!RxQ.Enqueue(in)){
@@ -56,10 +85,15 @@ void loop(void)
                 //Serial.write(outFrame, frameLen);
                 i += msgLen;
                 delPos = i;
+                int t_instant_dez, t_instant_cent, t_instant_un;
                 
-                pos = msgBuff[8];
+                t_instant_cent = ((int)msgBuff[8] - '0')*100;
+                t_instant_dez = ((int)msgBuff[9] - '0')*10;
+                t_instant_un = ((int)msgBuff[10] - '0');
+                t_instant = t_instant_cent + t_instant_dez + t_instant_un;
+                Serial.println(t_instant);
                 flag = true;
-                  
+                
             }else{
                 if (i>0){
                     delPos = i-1;
@@ -67,10 +101,8 @@ void loop(void)
             }
         }
     }
-    RxQ.Clear(delPos);
-    if(flag){
-        myservo.write(pos);
-        //Serial.println(pos);
-    }
-    delay(10);
-}
+  RxQ.Clear(delPos);
+  
+  return t_instant;
+  }
+
