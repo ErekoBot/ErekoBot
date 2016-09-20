@@ -1,9 +1,23 @@
-import XBee
-import math
-import cv2
-from time import sleep
+#
+ # @file   main.py
+ # @author Samuel Venzi
+ # @date   20/09/2016
+ #
+ # @brief Perfil 1 de comunicação
+ #
+ # Esse código realiza a comunicação dos módulos com o computador host
+ # utilizando o formato pré-definido do primeiro perfil, que manda
+ # cada ângulo que o motor do módulo deve estar.
+#
 
-def calculate(i):
+
+import XBee  # XBee é uma classe própria implementada em XBee.py
+import math
+from time import sleep
+# importação de pacotes
+
+
+def calculate(i): # função que recebe o número do módulo e retorna uma lista com ângulos do respectivo módulo
     d0 = 42
     d = 81
     pi = 3.141592
@@ -29,7 +43,7 @@ def calculate(i):
 if __name__ == "__main__":
     xbee = XBee.XBee("/dev/ttyUSB0")  # Your serial port name here
     
-    angles_1 = calculate(1)
+    angles_1 = calculate(1)  # cálculo dos ângulos de cada um dos N módulos do robô
     angles_2 = calculate(2)
     angles_3 = calculate(3)
     angles_4 = calculate(4)
@@ -39,22 +53,22 @@ if __name__ == "__main__":
     while True:
         i = 0
         for angle in angles_1:
-            content_1 = format(angle, '02x')
+
+            content_1 = format(angle, '02x')         # formatação do pacote que será enviado 
             content_2 = format(angles_2[i], '02x')
             content_3 = format(angles_3[i], '02x')
             content_4 = format(angles_4[i], '02x')
             content_5 = format(angles_5[i], '02x')
             content_6 = format(angles_6[i], '02x')
-            print(angle)
-            xbee.Send(bytearray.fromhex(content_1), 0x0001)  
-            # xbee.Send(bytearray.fromhex(content_2),0x0002)
-            # xbee.Send(bytearray.fromhex(content_3),0x0003)
-            # xbee.Send(bytearray.fromhex(content_4),0x0004)
-            # xbee.Send(bytearray.fromhex(content_5),0x0005)
-            # xbee.Send(bytearray.fromhex(content_6),0x0006)
+
+            xbee.Send(bytearray.fromhex(content_1), 0x0001)  # envio dos contents de cada módulo ao seu respectivo endereço
+            xbee.Send(bytearray.fromhex(content_2),0x0002)
+            xbee.Send(bytearray.fromhex(content_3),0x0003)   # o endereço é definido pelo XCTU para cada XBee escravo
+            xbee.Send(bytearray.fromhex(content_4),0x0004)   # em hexadecimal
+            xbee.Send(bytearray.fromhex(content_5),0x0005)
+            xbee.Send(bytearray.fromhex(content_6),0x0006)
             i += 1
+
             sleep(0.005)
-            
-        print("over")
         
         
